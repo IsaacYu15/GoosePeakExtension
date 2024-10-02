@@ -36,6 +36,12 @@ chrome.storage.sync.get(['todolist'], function(result){
   if (!chrome.runtime.error) {
     todoNodes = result.todolist;
 
+    if (todoNodes == undefined)
+    {
+      todoNodes = [];
+      return;
+    }
+
     for (let i = 0; i < todoNodes.length; i ++)
     {
       var li = document.createElement("li");
