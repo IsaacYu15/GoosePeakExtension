@@ -4,17 +4,8 @@ import {
   HarmCategory
 } from '../node_modules/@google/generative-ai/dist/index.mjs';
 
-// Important! Do not expose your API in your extension code. You have to
-// options:
-//
-// 1. Let users provide their own API key.
-// 2. Manage API keys in your own server and proxy all calls to the Gemini
-// API through your own server, where you can implement additional security
-// measures such as authentification.
-//
-// It is only OK to put your API key into this file if you're the only
-// user of your extension or for testing.
-const apiKey = '';
+let apiKey = '...';
+let todoNodes = [];
 
 let genAI = null;
 let model = null;
@@ -27,10 +18,10 @@ const elementLoading = document.body.querySelector('#loading');
 const elementError = document.body.querySelector('#error');
 
 const elementAddToDo = document.body.querySelector('#addToDo');
+const elementAddAPI = document.body.querySelector('#addAPI');
 
-let todoNodes = [];
 
-//retrieve the old todos
+//retrieve the old todos and api key
 chrome.storage.sync.get(['todolist'], function(result){
   
   if (!chrome.runtime.error) {
@@ -58,7 +49,23 @@ chrome.storage.sync.get(['todolist'], function(result){
   
 });
 
+chrome.storage.sync.get(['api'], function(result){
+  
+  if (!chrome.runtime.error) {
+    apiKey = result.api;
+    console.log(apiKey);
 
+    if (apiKey == undefined)
+    {
+      api = '...';
+      return;
+    }
+  }
+  else{
+    console.log("could not retrieve todo nodes");
+  }
+  
+});
 
 function initModel(generationConfig) {
   const safetySettings = [
@@ -192,3 +199,10 @@ elementAddToDo.addEventListener('click', () => {
   });
 })
 
+elementAddAPI.addEventListener('click', () => {
+  var inputValue = document.getElementById("inputAPI").value;
+
+  chrome.storage.sync.set({ "api": inputValue }, function(){
+    console.log("successfully updated API key");
+  });
+})
