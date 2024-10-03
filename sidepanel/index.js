@@ -35,12 +35,7 @@ chrome.storage.sync.get(['todolist'], function(result){
 
     for (let i = 0; i < todoNodes.length; i ++)
     {
-      var li = document.createElement("li");
-      var t = document.createTextNode(todoNodes[i]);
-      li.appendChild(t);
-    
-      document.getElementById("toDoContents").appendChild(li);
-      console.log(todoNodes[i]);
+       createTodoItem(todoNodes[i]);
     }
   }
   else{
@@ -181,16 +176,12 @@ function hide(element) {
 }
 
 elementAddToDo.addEventListener('click', () => {
-  var li = document.createElement("li");
   var inputValue = document.getElementById("inputToDo").value;
-  var t = document.createTextNode(inputValue);
-  li.appendChild(t);
 
   if (inputValue === '') 
     return;
 
-  document.getElementById("toDoContents").appendChild(li);
-  document.getElementById("inputToDo").value = "";
+  createTodoItem(inputValue);
 
   todoNodes.push(inputValue);
 
@@ -206,3 +197,30 @@ elementAddAPI.addEventListener('click', () => {
     console.log("successfully updated API key");
   });
 })
+
+function createTodoItem(task)
+{
+  var li = document.createElement("li");
+
+  var t = document.createTextNode(task);
+  li.appendChild(t);
+
+  var button = document.createElement("button");
+  button.innerHTML = 'x';
+  button.onclick = function()
+  {
+    const index = todoNodes.indexOf(task);
+    todoNodes.splice(index, 1);
+
+    chrome.storage.sync.set({ "todolist": todoNodes }, function(){
+      console.log("successfully removed task");
+    });
+
+    li.remove();
+    t.remove();
+    button.remove();
+  }
+  li.appendChild(button);
+
+  document.getElementById("toDoContents").appendChild(li);
+}
