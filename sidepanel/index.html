@@ -4,12 +4,12 @@
     <link href="./output.css" rel="stylesheet">
   </head>
   <body>
-    <h1 class="text-blue-600">Locked In</h1>
+    <h1 class="text-4xl text-blue-600">Locked In</h1>
     </div>
 
     <div id="myAPI">
-      <input type="text" id="inputAPI" placeholder="Enter API...">
-      <button id="addAPI">Add</button>
+      <input type="text" id="inputAPI" class ="input" placeholder="Enter API...">
+      <button id="addAPI" class ="btn">Add</button>
     </div>
 
     <div id="response" class="text" hidden></div>
@@ -17,14 +17,15 @@
     <div id="error" class="text" hidden></div>
 
     <div id="myDIV" class="header">
-      <h2>I want to focus on:</h2>
-      <input type="text" id="inputToDo" placeholder="Title...">
-      <button id="addToDo">Add</button>
+      <h2 class ="text-4xl text-blue-600">I want to focus on:</h2>
+      <input type="text" id="inputToDo" class="input" placeholder="Title...">
+      <button id="addToDo" class="btn">Add</button>
     </div>
     <ul id="toDoContents"></ul>
 
 
     <script src="../dist/sidepanel.bundle.js" type="module"></script>
     <script src="index.js"></script>
+
   </body>
 </html>

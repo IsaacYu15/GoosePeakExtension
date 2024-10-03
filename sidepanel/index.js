@@ -20,7 +20,6 @@ const elementError = document.body.querySelector('#error');
 const elementAddToDo = document.body.querySelector('#addToDo');
 const elementAddAPI = document.body.querySelector('#addAPI');
 
-
 //retrieve the old todos and api key
 chrome.storage.sync.get(['todolist'], function(result){
   
@@ -207,6 +206,7 @@ function createTodoItem(task)
 
   var button = document.createElement("button");
   button.innerHTML = 'x';
+  button.className = "btn"
   button.onclick = function()
   {
     const index = todoNodes.indexOf(task);
