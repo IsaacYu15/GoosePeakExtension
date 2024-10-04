@@ -6,6 +6,7 @@ import {
 
 let apiKey = '...';
 let todoNodes = [];
+let anger = 0;
 
 let genAI = null;
 let model = null;
@@ -19,6 +20,8 @@ const elementError = document.body.querySelector('#error');
 
 const elementAddToDo = document.body.querySelector('#addToDo');
 const elementAddAPI = document.body.querySelector('#addAPI');
+
+const angerText = document.body.querySelector('#anger');
 
 //retrieve the old todos and api key
 chrome.storage.sync.get(['todolist'], function(result){
@@ -37,9 +40,6 @@ chrome.storage.sync.get(['todolist'], function(result){
        createTodoItem(todoNodes[i]);
     }
   }
-  else{
-    console.log("could not retrieve todo nodes");
-  }
   
 });
 
@@ -47,19 +47,29 @@ chrome.storage.sync.get(['api'], function(result){
   
   if (!chrome.runtime.error) {
     apiKey = result.api;
-    console.log(apiKey);
-
     if (apiKey == undefined)
     {
       api = '...';
       return;
     }
   }
-  else{
-    console.log("could not retrieve todo nodes");
+  
+});
+
+chrome.storage.sync.get(['anger'], function(result){
+  
+  if (!chrome.runtime.error) {
+    anger = Number(result.anger);
+    angerText.textContent = "Anger: " + anger;
+    if (anger == undefined || isNaN(anger))
+    {
+      anger = 0;
+      return;
+    }
   }
   
 });
+
 
 function initModel(generationConfig) {
   const safetySettings = [
@@ -81,6 +91,18 @@ async function runPrompt(prompt) {
   try {
     const result = await model.generateContent(prompt);
     const response = await result.response;
+    const formattedResponse = response.text().replace(/\./g, "").toLowerCase();
+    console.log(formattedResponse);
+
+    if (formattedResponse.trim() === "no")
+    {
+      console.log("ANGER");
+      setAnger(anger + 1);
+    }
+    else{
+      setAnger(anger - 1);
+    }
+
     return response.text();
   } catch (e) {
     console.log('Prompt failed');
@@ -128,8 +150,8 @@ async function getResponse(webPageHeader)
 
 function constructPrompt(pageTitle, todoList)
 {
-  const basePrompt = "This message is a title of a page the user is on. Based on this title, is the user currently on a web page that will help them achieve or learn things" +
-                      "in their todo list? Give your repsponse as a yes or no." + 
+  const basePrompt = "This message is a title of a page the user is on. Based on this title, is the user currently on a web page that will help them be productive, achieve or learn things" +
+                      "in their todo list? Give your repsponse as a yes (the user is being productive) or no (the user is not being productive) answer only there is no need for any explanations." + 
                       `The title of the page the user is on is called: ${pageTitle} and the items on their todolist are: ${todoList}`;
   return basePrompt;
 }
@@ -223,4 +245,16 @@ function createTodoItem(task)
   li.appendChild(button);
 
   document.getElementById("toDoContents").appendChild(li);
+}
+
+function setAnger(change)
+{
+  anger = change;
+  anger = Math.min(anger, 5);
+  anger = Math.max(anger, 0);
+
+  chrome.storage.sync.set({ "anger": Number(anger) }, function(){
+    console.log("successfully updated anger");
+  });
+  angerText.textContent = "Anger: " + anger;
 }

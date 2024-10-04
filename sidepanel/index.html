@@ -4,6 +4,7 @@
     <link href="./output.css" rel="stylesheet">
   </head>
   <body>
+    <h1 id="anger" class="text-4xl text-blue-600"></h1>
     <h1 class="text-4xl text-blue-600">Locked In</h1>
     </div>
 
@@ -12,10 +13,6 @@
       <button id="addAPI" class ="btn">Add</button>
     </div>
 
-    <div id="response" class="text" hidden></div>
-    <div id="loading" class="text" hidden><span class="blink">...</span></div>
-    <div id="error" class="text" hidden></div>
-
     <div id="myDIV" class="header">
       <h2 class ="text-4xl text-blue-600">I want to focus on:</h2>
       <input type="text" id="inputToDo" class="input" placeholder="Title...">
@@ -23,6 +20,9 @@
     </div>
     <ul id="toDoContents"></ul>
 
+    <div id="response" class="text" hidden></div>
+    <div id="loading" class="text" hidden><span class="blink">...</span></div>
+    <div id="error" class="text" hidden></div>
 
     <script src="../dist/sidepanel.bundle.js" type="module"></script>
     <script type="module" src="index.js"></script>
