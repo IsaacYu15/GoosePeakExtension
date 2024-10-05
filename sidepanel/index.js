@@ -6,7 +6,15 @@ import {
 
 let apiKey = '...';
 let todoNodes = [];
+
 let anger = 0;
+const geesePaths = [
+  "../images/geese/1.jpg",
+  "../images/geese/2.jpg",
+  "../images/geese/3.jpg",
+  "../images/geese/4.jpg",
+  "../images/geese/5.jpg"
+];
 
 let genAI = null;
 let model = null;
@@ -22,6 +30,7 @@ const elementAddToDo = document.body.querySelector('#addToDo');
 const elementAddAPI = document.body.querySelector('#addAPI');
 
 const angerText = document.body.querySelector('#anger');
+const geeseImg = document.body.querySelector("#geese");
 
 //retrieve the old todos and api key
 chrome.storage.sync.get(['todolist'], function(result){
@@ -47,10 +56,10 @@ chrome.storage.sync.get(['api'], function(result){
   
   if (!chrome.runtime.error) {
     apiKey = result.api;
+
     if (apiKey == undefined)
     {
       api = '...';
-      return;
     }
   }
   
@@ -60,12 +69,14 @@ chrome.storage.sync.get(['anger'], function(result){
   
   if (!chrome.runtime.error) {
     anger = Number(result.anger);
-    angerText.textContent = "Anger: " + anger;
+
     if (anger == undefined || isNaN(anger))
     {
       anger = 0;
-      return;
     }
+
+    angerText.textContent = "Anger: " + (anger + 1);
+    geeseImg.src = geesePaths[anger];
   }
   
 });
@@ -250,11 +261,13 @@ function createTodoItem(task)
 function setAnger(change)
 {
   anger = change;
-  anger = Math.min(anger, 5);
+  anger = Math.min(anger, 4);
   anger = Math.max(anger, 0);
 
   chrome.storage.sync.set({ "anger": Number(anger) }, function(){
     console.log("successfully updated anger");
   });
-  angerText.textContent = "Anger: " + anger;
+
+  angerText.textContent = "Anger: " + (anger + 1);
+  geeseImg.src = geesePaths[anger];
 }
