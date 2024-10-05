@@ -32,7 +32,6 @@ const elementAddAPI = document.body.querySelector('#addAPI');
 const angerText = document.body.querySelector('#anger');
 const geeseImg = document.body.querySelector("#geese");
 
-//retrieve the old todos and api key
 chrome.storage.sync.get(['todolist'], function(result){
   
   if (!chrome.runtime.error) {
@@ -43,7 +42,7 @@ chrome.storage.sync.get(['todolist'], function(result){
       todoNodes = [];
       return;
     }
-
+    
     for (let i = 0; i < todoNodes.length; i ++)
     {
        createTodoItem(todoNodes[i]);
@@ -53,7 +52,7 @@ chrome.storage.sync.get(['todolist'], function(result){
 });
 
 chrome.storage.sync.get(['api'], function(result){
-  
+    
   if (!chrome.runtime.error) {
     apiKey = result.api;
 
@@ -80,7 +79,6 @@ chrome.storage.sync.get(['anger'], function(result){
   }
   
 });
-
 
 function initModel(generationConfig) {
   const safetySettings = [
@@ -210,7 +208,7 @@ function hide(element) {
 elementAddToDo.addEventListener('click', () => {
   var inputValue = document.getElementById("inputToDo").value;
 
-  if (inputValue === '') 
+  if (inputValue === '' || todoNodes.includes(inputValue)) 
     return;
 
   createTodoItem(inputValue);
@@ -234,7 +232,9 @@ function createTodoItem(task)
 {
   var li = document.createElement("li");
 
-  var t = document.createTextNode(task);
+  var t = document.createElement('p');
+  t.innerHTML = task;
+  t.className = "text-2xl text-secondary";
   li.appendChild(t);
 
   var button = document.createElement("button");
@@ -253,8 +253,9 @@ function createTodoItem(task)
     t.remove();
     button.remove();
   }
-  li.appendChild(button);
 
+  li.appendChild(button);
+  li.className = "todoItem";
   document.getElementById("toDoContents").appendChild(li);
 }
 
