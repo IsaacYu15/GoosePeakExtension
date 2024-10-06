@@ -6,11 +6,11 @@
   <body class="bg-primary m-8">
 
     <div id="requestAPI">
-      <h1 class="text-4xl text-secondary pb-2">API KEY NOT FOUND!</h1>
-      <p class="text-sm text-tertiary">
+      <h1 class="text-4xl text-secondary pb-2">WELCOME TO GOOSE PEAK!</h1>
+      <p class="text-sm text-secondary">
         To ensure that GoosePeak can remains a free service, you must use your own Google Gemini API key
       </p>
-      <a class="text-sm text-secondary" href="https://ai.google.dev/pricing">Create a free API key here!</a>
+      <a class="text-sm text-tertiary text-decoration-line: underline" href="https://ai.google.dev/pricing" target="_blank">Create a free API key here!</a>
       <div id="myAPI" class="inputAddPair">
         <input type="text" id="inputAPI" class ="input" placeholder="Enter API...">
         <button id="addAPI" class ="btn">+</button>
@@ -19,7 +19,9 @@
 
 
     <div id="mainContent">
-      <h1 id="anger" class="text-4xl text-secondary pb-2"></h1>
+      <button id="goToStats" class="navButton">SEE STATS</button>
+
+      <h1 id="anger" class="text-3xl text-red-300 pb-2 pt-14 text-center"></h1>
       <img id ="geese" class="object-contain h-48 w-96" src="../images/geese/1.jpg" alt="geese">
   
       <h1 class ="pt-2 pb-2 text-3xl text-secondary">I'm Learning:</h1>
@@ -32,7 +34,8 @@
       <div id="response" class="text" hidden></div>
       <div id="loading" class="text" hidden><span class="blink">...</span></div>
       <div id="error" class="text" hidden></div>
-      <button id="goToStats">Go to Page 2</button>
+      
+      
     </div>
 
 

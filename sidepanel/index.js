@@ -1,3 +1,58 @@
+document.getElementById("requestAPI").style.display = "none";
+
+chrome.storage.sync.get(['api'], function(result){
+    
+  if (!chrome.runtime.error) {
+
+    if (result.api == undefined)
+    {
+      api = '...';
+      document.getElementById("mainContent").style.display = "none";
+      document.getElementById("requestAPI").style.display = "block";
+      return;
+    }
+
+    apiKey = result.api;
+  }
+  
+});
+
+chrome.storage.sync.get(['todolist'], function(result){
+  
+  if (!chrome.runtime.error) {
+    todoNodes = result.todolist;
+
+    if (todoNodes == undefined)
+    {
+      todoNodes = [];
+      return;
+    }
+    
+    for (let i = 0; i < todoNodes.length; i ++)
+    {
+       createTodoItem(todoNodes[i]);
+    }
+  }
+  
+});
+
+chrome.storage.sync.get(['anger'], function(result){
+  
+  if (!chrome.runtime.error) {
+    anger = Number(result.anger);
+
+    if (anger == undefined || isNaN(anger))
+    {
+      anger = 0;
+    }
+
+    angerText.textContent = "Anger: " + (anger + 1);
+    geeseImg.src = geesePaths[anger];
+  }
+  
+});
+
+
 import {
   GoogleGenerativeAI,
   HarmBlockThreshold,
@@ -22,6 +77,10 @@ let generationConfig = {
   temperature: 1
 };
 
+document.getElementById('goToStats').addEventListener('click', function() {
+  window.location.href = 'stats.html';
+});
+
 const elementResponse = document.body.querySelector('#response');
 const elementLoading = document.body.querySelector('#loading');
 const elementError = document.body.querySelector('#error');
@@ -32,58 +91,31 @@ const elementAddAPI = document.body.querySelector('#addAPI');
 const angerText = document.body.querySelector('#anger');
 const geeseImg = document.body.querySelector("#geese");
 
-chrome.storage.sync.get(['todolist'], function(result){
-  
-  if (!chrome.runtime.error) {
-    todoNodes = result.todolist;
+elementAddToDo.addEventListener('click', () => {
+  var inputValue = document.getElementById("inputToDo").value;
 
-    if (todoNodes == undefined)
-    {
-      todoNodes = [];
-      return;
-    }
-    
-    for (let i = 0; i < todoNodes.length; i ++)
-    {
-       createTodoItem(todoNodes[i]);
-    }
-  }
-  
-});
+  if (inputValue === '' || todoNodes.includes(inputValue)) 
+    return;
 
-chrome.storage.sync.get(['api'], function(result){
-    
-  if (!chrome.runtime.error) {
+  createTodoItem(inputValue);
 
-    if (result.api == undefined)
-    {
-      api = '...';
-      document.getElementById("requestAPI").style.display = "none";
-      return;
-    }
+  todoNodes.push(inputValue);
 
-    apiKey = result.api;
-    document.getElementById("mainContent").style.display = "none";
-    
-  }
-  
-});
+  chrome.storage.sync.set({ "todolist": todoNodes }, function(){
+    console.log("successfully updated todos");
+  });
+})
 
-chrome.storage.sync.get(['anger'], function(result){
-  
-  if (!chrome.runtime.error) {
-    anger = Number(result.anger);
+elementAddAPI.addEventListener('click', () => {
+  var inputValue = document.getElementById("inputAPI").value;
 
-    if (anger == undefined || isNaN(anger))
-    {
-      anger = 0;
-    }
+  chrome.storage.sync.set({ "api": inputValue }, function(){
+    console.log("successfully updated API key");
+  });
+})
 
-    angerText.textContent = "Anger: " + (anger + 1);
-    geeseImg.src = geesePaths[anger];
-  }
-  
-});
+
+
 
 function initModel(generationConfig) {
   const safetySettings = [
@@ -210,36 +242,13 @@ function hide(element) {
   element.setAttribute('hidden', '');
 }
 
-elementAddToDo.addEventListener('click', () => {
-  var inputValue = document.getElementById("inputToDo").value;
-
-  if (inputValue === '' || todoNodes.includes(inputValue)) 
-    return;
-
-  createTodoItem(inputValue);
-
-  todoNodes.push(inputValue);
-
-  chrome.storage.sync.set({ "todolist": todoNodes }, function(){
-    console.log("successfully updated todos");
-  });
-})
-
-elementAddAPI.addEventListener('click', () => {
-  var inputValue = document.getElementById("inputAPI").value;
-
-  chrome.storage.sync.set({ "api": inputValue }, function(){
-    console.log("successfully updated API key");
-  });
-})
-
 function createTodoItem(task)
 {
   var li = document.createElement("li");
 
   var t = document.createElement('p');
   t.innerHTML = task;
-  t.className = "text-xl text-secondary";
+  t.className = "text-lg text-secondary";
   li.appendChild(t);
 
   var button = document.createElement("button");
@@ -278,6 +287,3 @@ function setAnger(change)
   geeseImg.src = geesePaths[anger];
 }
 
-document.getElementById('goToStats').addEventListener('click', function() {
-  window.location.href = 'stats.html';
-});

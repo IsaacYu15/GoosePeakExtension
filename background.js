@@ -4,9 +4,22 @@ chrome.sidePanel
 
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === 'complete' && tab.url && tab.url.includes('http')) {
-    chrome.scripting.executeScript({
-      target: { tabId: tabId },
-      files: ['content.js']
-    });
+    pollIfUserOnTrack();
   }
 });
+
+chrome.tabs.onActivated.addListener((tabId, changeInfo, tab) => {
+  if (changeInfo.status === 'complete' && tab.url && tab.url.includes('http')) {
+    pollIfUserOnTrack();
+  }
+});
+
+function pollIfUserOnTrack ()
+{
+  console.log("YES");
+  chrome.scripting.executeScript({
+    target: { tabId: tabId },
+    files: ['content.js']
+  });
+}
+

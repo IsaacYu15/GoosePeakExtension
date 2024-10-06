@@ -12,10 +12,15 @@
 
 .inputAddPair
 {
-    @apply flex flex-row w-2/3 space-x-4 pt-4
+    @apply flex flex-row w-4/5 space-x-4 pt-4
 }
 
 .todoItem
 {
-    @apply flex justify-between flex-row w-2/3 bg-slate-700 p-1 rounded-lg
+    @apply flex justify-between flex-row w-4/5 bg-slate-700 p-1 rounded-lg
+}
+
+.navButton
+{
+    @apply absolute top-8 left-8 h-8 w-28 bg-secondary rounded-lg hover:bg-gray-200 text-primary font-bold
 }
