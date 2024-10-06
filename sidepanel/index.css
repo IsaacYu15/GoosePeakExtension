@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .btn {
-    @apply bg-tertiary hover:bg-blue-700 text-primary font-bold py-2 px-4 rounded-lg;
+    @apply bg-tertiary hover:bg-tertiaryHover text-primary font-bold py-2 px-4 rounded-lg;
 }
 
 .input {
@@ -12,7 +12,7 @@
 
 .inputAddPair
 {
-    @apply flex flex-row w-2/3 space-x-4 
+    @apply flex flex-row w-2/3 space-x-4 pt-4
 }
 
 .todoItem

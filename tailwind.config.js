@@ -9,6 +9,7 @@ module.exports = {
         primary:'#13233f',
         secondary:'#FFFFFF',
         tertiary:'#B6FFB0',
+        tertiaryHover: '#88bd84',
       },
       fontFamily:{
         body:['Inter']

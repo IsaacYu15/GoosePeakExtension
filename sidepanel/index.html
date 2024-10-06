@@ -4,24 +4,37 @@
     <link href="./output.css" rel="stylesheet">
   </head>
   <body class="bg-primary m-8">
-    <h1 id="anger" class="text-4xl text-secondary"></h1>
-    <img id ="geese" class="object-contain h-48 w-96" src="../images/geese/1.jpg" alt="geese">
 
-    <div id="myAPI" class="inputAddPair">
-      <input type="text" id="inputAPI" class ="input" placeholder="Enter API...">
-      <button id="addAPI" class ="btn">+</button>
+    <div id="requestAPI">
+      <h1 class="text-4xl text-secondary pb-2">API KEY NOT FOUND!</h1>
+      <p class="text-sm text-tertiary">
+        To ensure that GoosePeak can remains a free service, you must use your own Google Gemini API key
+      </p>
+      <a class="text-sm text-secondary" href="https://ai.google.dev/pricing">Create a free API key here!</a>
+      <div id="myAPI" class="inputAddPair">
+        <input type="text" id="inputAPI" class ="input" placeholder="Enter API...">
+        <button id="addAPI" class ="btn">+</button>
+      </div>
     </div>
 
-    <h1 class ="pt-2 pb-2 text-4xl text-secondary">I'm Learning:</h1>
-    <div id="myDIV" class="inputAddPair">
-      <input type="text" id="inputToDo" class="input" placeholder="Todo...">
-      <button id="addToDo" class="btn">+</button>
-    </div>
-    <ul id="toDoContents" class="pt-2 flex flex-col gap-2"></ul>
 
-    <div id="response" class="text" hidden></div>
-    <div id="loading" class="text" hidden><span class="blink">...</span></div>
-    <div id="error" class="text" hidden></div>
+    <div id="mainContent">
+      <h1 id="anger" class="text-4xl text-secondary pb-2"></h1>
+      <img id ="geese" class="object-contain h-48 w-96" src="../images/geese/1.jpg" alt="geese">
+  
+      <h1 class ="pt-2 pb-2 text-3xl text-secondary">I'm Learning:</h1>
+      <div id="myDIV" class="inputAddPair">
+        <input type="text" id="inputToDo" class="input" placeholder="Todo...">
+        <button id="addToDo" class="btn">+</button>
+      </div>
+      <ul id="toDoContents" class="pt-2 flex flex-col gap-2"></ul>
+  
+      <div id="response" class="text" hidden></div>
+      <div id="loading" class="text" hidden><span class="blink">...</span></div>
+      <div id="error" class="text" hidden></div>
+      <button id="goToStats">Go to Page 2</button>
+    </div>
+
 
     <script src="../dist/sidepanel.bundle.js" type="module"></script>
 

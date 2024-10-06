@@ -54,12 +54,17 @@ chrome.storage.sync.get(['todolist'], function(result){
 chrome.storage.sync.get(['api'], function(result){
     
   if (!chrome.runtime.error) {
-    apiKey = result.api;
 
-    if (apiKey == undefined)
+    if (result.api == undefined)
     {
       api = '...';
+      document.getElementById("requestAPI").style.display = "none";
+      return;
     }
+
+    apiKey = result.api;
+    document.getElementById("mainContent").style.display = "none";
+    
   }
   
 });
@@ -234,7 +239,7 @@ function createTodoItem(task)
 
   var t = document.createElement('p');
   t.innerHTML = task;
-  t.className = "text-2xl text-secondary";
+  t.className = "text-xl text-secondary";
   li.appendChild(t);
 
   var button = document.createElement("button");
@@ -272,3 +277,7 @@ function setAnger(change)
   angerText.textContent = "Anger: " + (anger + 1);
   geeseImg.src = geesePaths[anger];
 }
+
+document.getElementById('goToStats').addEventListener('click', function() {
+  window.location.href = 'stats.html';
+});

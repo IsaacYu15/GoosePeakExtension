@@ -9,7 +9,10 @@
   "permissions": ["sidePanel",
                   "storage"],
   "side_panel": {
-    "default_path": "sidepanel/index.html"
+    "default_path": "sidepanel/index.html",
+    "options" : {
+      "sidepanel/stats.html": {"name": "stats"}
+    }
   },
   "content_scripts": [
     {
@@ -25,5 +28,8 @@
       "128": "images/icon128.png"
     },
     "default_title": "Open Chat Interface"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';"
   }
 }
