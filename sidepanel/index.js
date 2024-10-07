@@ -52,7 +52,6 @@ chrome.storage.sync.get(['anger'], function(result){
   
 });
 
-
 import {
   GoogleGenerativeAI,
   HarmBlockThreshold,
@@ -70,6 +69,7 @@ const geesePaths = [
   "../images/geese/4.jpg",
   "../images/geese/5.jpg"
 ];
+let startTime = Date.now();
 
 let genAI = null;
 let model = null;
@@ -114,9 +114,6 @@ elementAddAPI.addEventListener('click', () => {
   });
 })
 
-
-
-
 function initModel(generationConfig) {
   const safetySettings = [
     {
@@ -138,15 +135,39 @@ async function runPrompt(prompt) {
     const result = await model.generateContent(prompt);
     const response = await result.response;
     const formattedResponse = response.text().replace(/\./g, "").toLowerCase();
-    console.log(formattedResponse);
 
+    let elapsed = Date.now() - startTime;
+    startTime = Date.now();
     if (formattedResponse.trim() === "no")
     {
-      console.log("ANGER");
       setAnger(anger + 1);
+      chrome.storage.sync.get(['totalUnproductive'], function(result){
+  
+        if (!chrome.runtime.error) {
+          let temp = Number(result.totalUnproductive);
+          if (!(temp == undefined || isNaN(temp)))
+          {
+            elapsed += temp;
+          }
+        }
+        
+      });      
+      chrome.storage.sync.set({ "totalUnproductive": elapsed }, function(){ console.log ("unprod time: " + elapsed)});
     }
     else{
       setAnger(anger - 1);
+      chrome.storage.sync.get(['totalProductive'], function(result){
+  
+        if (!chrome.runtime.error) {
+          let temp = Number(result.totalProductive);
+          if (!(temp == undefined || isNaN(temp)))
+          {
+            elapsed += temp;
+          }
+        }
+        
+      }); 
+      chrome.storage.sync.set({ "totalProductive": elapsed }, function(){ console.log ("prod time: " + elapsed) });
     }
 
     return response.text();
