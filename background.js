@@ -16,7 +16,6 @@ chrome.tabs.onActivated.addListener((tabId, changeInfo, tab) => {
 
 function pollIfUserOnTrack ()
 {
-  console.log("YES");
   chrome.scripting.executeScript({
     target: { tabId: tabId },
     files: ['content.js']

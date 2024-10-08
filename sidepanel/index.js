@@ -69,7 +69,7 @@ const geesePaths = [
   "../images/geese/4.jpg",
   "../images/geese/5.jpg"
 ];
-let startTime = Date.now();
+let startTime = -1;
 
 let genAI = null;
 let model = null;
@@ -136,8 +136,15 @@ async function runPrompt(prompt) {
     const response = await result.response;
     const formattedResponse = response.text().replace(/\./g, "").toLowerCase();
 
-    let elapsed = Date.now() - startTime;
-    startTime = Date.now();
+    let elapsed = 0;
+    if (startTime == -1)
+    {
+      startTime = Date.now();
+    }
+    else{
+      elapsed= Date.now() - startTime;
+    }
+    
     if (formattedResponse.trim() === "no")
     {
       setAnger(anger + 1);

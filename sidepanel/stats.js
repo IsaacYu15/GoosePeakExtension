@@ -7,33 +7,31 @@ let totalUnproductive;
 
 const elementProductive = document.body.querySelector('#totalProductive');
 const elementUnProductive = document.body.querySelector('#totalUnproductive');
+const percentProductive = document.body.querySelector('#prodPercent');
+const percentUnProductive = document.body.querySelector('#unprodPercent');
 
-chrome.storage.sync.get(['totalUnproductive'], function(result){
-  
-  if (!chrome.runtime.error) {
-    totalUnproductive = Number(result.totalUnproductive);
 
-    if (totalUnproductive == undefined || isNaN(totalUnproductive))
-    {
-      totalUnproductive = 0;
-    }
-
-    elementUnProductive.textContent = "Unproductive time: " + totalUnproductive;
-  }
-  
-});
-
-chrome.storage.sync.get(['totalProductive'], function(result){
-  
-  if (!chrome.runtime.error) {
-    totalProductive = Number(result.totalProductive);
-
-    if (totalProductive == undefined || isNaN(totalProductive))
-    {
-      totalProductive = 0;
-    }
-  }
-
+window.onload=async function() {
+  totalUnproductive = await readStorage('totalUnproductive');
+  elementUnProductive.textContent = "Unproductive time: " + totalUnproductive;
+  totalProductive = await readStorage('totalProductive');
   elementProductive.textContent = "Productive time: " + totalProductive;
   
-});
+  percentUnProductive.style.width = 10/12 * (totalUnproductive / (totalProductive + totalUnproductive)) * 100 + "%";
+
+  console.log(percentProductive.style.width);
+  console.log(percentUnProductive.style.width);
+
+}
+
+const readStorage = async (key) => {
+  return new Promise((resolve, reject) => {
+    chrome.storage.sync.get([key], function (result) {
+      if (result[key] === undefined) {
+        reject();
+      } else {
+        resolve(result[key]);
+      }
+    });
+  });
+};
