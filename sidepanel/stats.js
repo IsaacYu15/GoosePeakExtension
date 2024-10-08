@@ -13,14 +13,24 @@ const percentUnProductive = document.body.querySelector('#unprodPercent');
 
 window.onload=async function() {
   totalUnproductive = await readStorage('totalUnproductive');
-  elementUnProductive.textContent = "Unproductive time: " + totalUnproductive;
   totalProductive = await readStorage('totalProductive');
-  elementProductive.textContent = "Productive time: " + totalProductive;
   
-  percentUnProductive.style.width = 10/12 * (totalUnproductive / (totalProductive + totalUnproductive)) * 100 + "%";
+  
+  const totalTime = totalProductive + totalUnproductive;
+  const prodValue = Math.round(10000 * (totalProductive / (totalProductive + totalUnproductive))) / 100;
+  const unprodValue = Math.round(100 * (100-prodValue)) / 100;
+  if (totalTime > 0 )
+  {
+    percentProductive.style.width = prodValue + "%";
+    percentUnProductive.style.width = "100%";
+  }
+  else{
+    percentProductive.style.width = "50%";
+    percentUnProductive.style.width = "100%";
+  }
 
-  console.log(percentProductive.style.width);
-  console.log(percentUnProductive.style.width);
+  elementProductive.textContent = "Productivity: " + prodValue + "%";
+  elementUnProductive.textContent = "Procrasination: " + unprodValue + "%";
 
 }
 

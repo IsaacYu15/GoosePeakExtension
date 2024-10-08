@@ -69,7 +69,9 @@ const geesePaths = [
   "../images/geese/4.jpg",
   "../images/geese/5.jpg"
 ];
-let startTime = -1;
+
+let startTime = 0;
+let isProductive = null;
 
 let genAI = null;
 let model = null;
@@ -137,44 +139,34 @@ async function runPrompt(prompt) {
     const formattedResponse = response.text().replace(/\./g, "").toLowerCase();
 
     let elapsed = 0;
-    if (startTime == -1)
+    let accumulationKey = "";
+
+    if (isProductive == null)
     {
       startTime = Date.now();
     }
     else{
+
+      if (isProductive)
+      {
+        accumulationKey = "totalProductive";
+      }
+      else{
+        accumulationKey = "totalUnproductive";
+      }
+
       elapsed= Date.now() - startTime;
+      startTime = Date.now();
     }
     
     if (formattedResponse.trim() === "no")
     {
-      setAnger(anger + 1);
-      chrome.storage.sync.get(['totalUnproductive'], function(result){
-  
-        if (!chrome.runtime.error) {
-          let temp = Number(result.totalUnproductive);
-          if (!(temp == undefined || isNaN(temp)))
-          {
-            elapsed += temp;
-          }
-        }
-        
-      });      
-      chrome.storage.sync.set({ "totalUnproductive": elapsed }, function(){ console.log ("unprod time: " + elapsed)});
+      isProductive = false;
+      setAnger(anger + 1, accumulationKey, elapsed);
     }
     else{
-      setAnger(anger - 1);
-      chrome.storage.sync.get(['totalProductive'], function(result){
-  
-        if (!chrome.runtime.error) {
-          let temp = Number(result.totalProductive);
-          if (!(temp == undefined || isNaN(temp)))
-          {
-            elapsed += temp;
-          }
-        }
-        
-      }); 
-      chrome.storage.sync.set({ "totalProductive": elapsed }, function(){ console.log ("prod time: " + elapsed) });
+      isProductive = true;
+      setAnger(anger - 1, accumulationKey, elapsed);
     }
 
     return response.text();
@@ -301,7 +293,7 @@ function createTodoItem(task)
   document.getElementById("toDoContents").appendChild(li);
 }
 
-function setAnger(change)
+function setAnger(change, key, elapsed)
 {
   anger = change;
   anger = Math.min(anger, 4);
@@ -310,6 +302,25 @@ function setAnger(change)
   chrome.storage.sync.set({ "anger": Number(anger) }, function(){
     console.log("successfully updated anger");
   });
+
+
+  chrome.storage.sync.get([key], function(result){
+  
+    if (!chrome.runtime.error) {
+      let temp = Number(result[key]);
+      if (!(temp == undefined || isNaN(temp)))
+      {
+        elapsed += temp;
+      }
+
+      chrome.storage.sync.set({ [key] : elapsed }, function(){ console.log ("saved: " + elapsed) });
+    }
+    
+    
+  });     
+
+
+
 
   angerText.textContent = "Anger: " + (anger + 1);
   geeseImg.src = geesePaths[anger];
