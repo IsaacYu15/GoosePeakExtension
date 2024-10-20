@@ -4,17 +4,11 @@ import {
   HarmCategory
 } from '../node_modules/@google/generative-ai/dist/index.mjs';
 
+import geeseMessages from "./data";
+
 let generationConfig = {
   temperature: 1
 };
-
-const geeseMessages = [
-  { id: 0, header: "You are goosing the right way!", path: "../images/geese/1.jpg", desc: "Learn new concepts and do your tasks. Don't let them fly away!"},
-  { id: 1, header: "I got just got goosebumps...", path: "../images/geese/2.jpg", desc: "Scared me there for a sec! Though you were going off track..."},
-  { id: 2, header: "Don't be a silly goose.", path: "../images/geese/3.jpg", desc: "Stay on track. If you don't, you will see another side of me."},
-  { id: 3, header: "Stop goosing around... I will honk. ", path: "../images/geese/4.jpg", desc: "HONK! What are you doing here? Aren't you supposed to be working?"},
-  { id: 4, header: "Goose on the loose! And it's coming for you.", path: "../images/geese/5.jpg", desc: "You need to be disciplined. I shall show you true power"},
-];
 
 document.getElementById("requestAPI").style.display = "none";
 
@@ -166,7 +160,9 @@ async function runPrompt(prompt) {
     {
       isProductive = false;
       setAnger(anger + 1, accumulationKey, elapsed);
-      alert(geeseMessages[anger].header + "\n" + geeseMessages[anger].desc); 
+
+      const passIndex = encodeURIComponent(anger);
+      window.open(chrome.runtime.getURL(`./sidepanel/popup.html?data=${passIndex}`), "extension_popup", `width=${geeseMessages[anger].w} height=${geeseMessages[anger].h},status=no,scrollbars=yes,resizable=no`);
     }
     else{
       isProductive = true;
