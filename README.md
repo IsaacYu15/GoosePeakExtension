@@ -1,26 +1,11 @@
-# Using the Gemini API in a Chrome Extension.
+# GoosePeak
+Your professor assigns a YouTube lecture to review, but you end up watching your favourite youtube video instead and guess what! You're suddenly behind schedule We've all been there, and it's not a great feeling ... that's where GoosePeak steps in to help 💪. GoosePeak is a chrome extension that's dedicated towards helping you reach your "peak" productivity, by "peeking" at your screen! With GoosePeak, you find your own goose buddy that grows more and more frustrated if you choose to browse websites that are not related to items on your to do list.
 
-This sample demonstrates how to use the Gemini Cloud API in a Chrome Extension.
+More details and the original prototype developed at Hack the North can be found [here](https://devpost.com/software/goosepeak-hixzd8)
 
-## Overview
-
-The extension provides a chat interface for the Gemini API. To learn more about the API head over to [https://ai.google.dev/](https://ai.google.dev/).
-
-## Running this extension
-
-1. Clone this repository.
-2. Download the Gemini API client by running:
-   ```sh
-   npm install
-   ```
-3. [Retrieve an API key](https://ai.google.dev/gemini-api/docs/api-key) and update [functional-samples/ai.gemini-in-the-cloud/sidepanel/index.js](functional-samples/ai.gemini-in-the-cloud/sidepanel/index.js) (only for testing).
-4. Compile the JS bundle for the sidepanel implementation by running:
-   ```sh
-   npm run build
-   ```
-5. Load this directory in Chrome as an [unpacked extension](https://developer.chrome.com/docs/extensions/mv3/getstarted/development-basics/#load-unpacked).
-6. Click the extension icon.
-7. Interact with the prompt API in the sidebar.
-
-npx tailwindcss -i ./sidepanel/index.css -o ./sidepanel/output.css --watch
-npm run build
+## BUILT USING
+- React
+- HTML / Tailwind CSS
+- Javascript
+- Node.Js
+- Google Gemini
