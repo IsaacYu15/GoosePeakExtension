@@ -3,9 +3,3 @@ Your professor assigns a YouTube lecture to review, but you end up watching your
 
 More details and the original prototype developed at Hack the North can be found [here](https://devpost.com/software/goosepeak-hixzd8)
 
-## BUILT USING
-- React
-- HTML / Tailwind CSS
-- Javascript
-- Node.Js
-- Google Gemini
